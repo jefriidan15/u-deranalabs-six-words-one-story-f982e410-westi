@@ -14,12 +14,18 @@ import fs from "node:fs";
 // whether anyone ever tried to learn it are left for the reader.
 const STORY = "Grandmother's last recipe died with her.";
 
-const words = STORY.trim().split(/\s+/);
+if (STORY !== STORY.trim()) {
+  throw new Error("rule: no-leading-or-trailing-whitespace — story must not start or end with whitespace");
+}
+if (/\s{2,}/.test(STORY)) {
+  throw new Error("rule: no-double-spaces — story must not contain consecutive whitespace");
+}
+const words = STORY.split(" ");
 if (words.length !== 6) {
-  throw new Error(`Story must be exactly 6 words, got ${words.length}`);
+  throw new Error(`rule: exactly-6-words — story must be exactly 6 words, got ${words.length}`);
 }
 if (STORY.length < 1 || STORY.length > 60) {
-  throw new Error(`Story must be 1-60 characters, got ${STORY.length}`);
+  throw new Error(`rule: 1-60-characters — story must be 1-60 characters, got ${STORY.length}`);
 }
 
 fs.mkdirSync("/output", { recursive: true });
